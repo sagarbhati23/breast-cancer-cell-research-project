@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local data and generated outputs
+data/raw/BreakHis_v1/*
+!data/raw/BreakHis_v1/.gitkeep
+metadata/generated/
