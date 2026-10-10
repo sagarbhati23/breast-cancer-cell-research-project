@@ -17,9 +17,9 @@ RESULTS = ROOT / "results" / "metrics"
 CHECKPOINTS = ROOT / "models"
 
 BATCH_SIZE = 4
-EPOCHS = 1
-TRAIN_SAMPLES = 100
-VAL_SAMPLES = 40
+EPOCHS = 5
+TRAIN_SAMPLES = None
+VAL_SAMPLES = None
 LEARNING_RATE = 0.0001
 
 torch.manual_seed(42)
@@ -29,14 +29,15 @@ device = torch.device("cpu")
 train_df = pd.read_csv(SPLITS / "fold_1_train.csv")
 val_df = pd.read_csv(SPLITS / "fold_1_val.csv")
 
-# Small smoke-test subsets; these are not research results.
-train_df = train_df.sample(
-    n=min(TRAIN_SAMPLES, len(train_df)), random_state=42
-).reset_index(drop=True)
+if TRAIN_SAMPLES is not None:
+    train_df = train_df.sample(
+        n=min(TRAIN_SAMPLES, len(train_df)), random_state=42
+    ).reset_index(drop=True)
 
-val_df = val_df.sample(
-    n=min(VAL_SAMPLES, len(val_df)), random_state=42
-).reset_index(drop=True)
+if VAL_SAMPLES is not None:
+    val_df = val_df.sample(
+        n=min(VAL_SAMPLES, len(val_df)), random_state=42
+    ).reset_index(drop=True)
 
 print(f"Training images: {len(train_df)}", flush=True)
 print(f"Validation images: {len(val_df)}", flush=True)
@@ -122,7 +123,7 @@ for epoch in range(EPOCHS):
 pd.DataFrame(history).to_csv(
     RESULTS / "baseline_pilot.csv", index=False
 )
-torch.save(model.state_dict(), CHECKPOINTS / "resnet18_pilot.pth")
+torch.save(model.state_dict(), CHECKPOINTS / "resnet18_baseline.pth")
 
 print("Smoke test complete. Metrics and checkpoint saved.", flush=True)
 
