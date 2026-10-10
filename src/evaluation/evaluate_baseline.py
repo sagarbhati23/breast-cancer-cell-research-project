@@ -43,10 +43,17 @@ model.eval()
 y_true, y_pred = [], []
 
 with torch.no_grad():
-    for images, labels in loader:
+    for i, (images, labels) in enumerate(loader, start=1):
         outputs = model(images.to(device))
         y_true.extend(labels.tolist())
         y_pred.extend(outputs.argmax(1).tolist())
+
+        if i % 25 == 0 or i == len(loader):
+            print(
+                f"Evaluated {min(i * loader.batch_size, len(test_df))}"
+                f"/{len(test_df)} images",
+                flush=True,
+            )
 
 RESULTS.mkdir(parents=True, exist_ok=True)
 FIGURES.mkdir(parents=True, exist_ok=True)
