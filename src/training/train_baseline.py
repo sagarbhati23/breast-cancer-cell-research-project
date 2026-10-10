@@ -20,7 +20,7 @@ BATCH_SIZE = 4
 EPOCHS = 1
 TRAIN_SAMPLES = 100
 VAL_SAMPLES = 40
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.0001
 
 torch.manual_seed(42)
 torch.set_num_threads(4)
@@ -78,6 +78,9 @@ for epoch in range(EPOCHS):
         outputs = model(images)
         loss = criterion(outputs, labels)
         loss.backward()
+
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
         optimizer.step()
 
         train_loss += loss.item() * labels.size(0)
