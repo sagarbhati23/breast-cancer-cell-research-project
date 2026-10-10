@@ -125,5 +125,4 @@ pd.DataFrame(history).to_csv(
 )
 torch.save(model.state_dict(), CHECKPOINTS / "resnet18_baseline.pth")
 
-print("Smoke test complete. Metrics and checkpoint saved.", flush=True)
-
+print("Baseline training complete. Metrics and checkpoint saved.", flush=True)
